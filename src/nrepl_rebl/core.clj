@@ -1,9 +1,19 @@
 (ns nrepl-rebl.core
-  (:require [cognitect.rebl :as rebl]
-            [clojure.tools.nrepl.middleware :as nrepl]
-            [clojure.tools.nrepl.middleware.session :refer [session]]
-            [clojure.tools.nrepl.transport :as transport])
-  (:import (clojure.tools.nrepl.transport Transport)))
+  (:require [cognitect.rebl :as rebl]))
+
+
+;; Compatibility with the legacy tools.nrepl and the new nREPL 0.4.x.
+(if (find-ns 'clojure.tools.nrepl)
+  (do (require
+        '[clojure.tools.nrepl.middleware :refer [set-descriptor!]]
+        '[clojure.tools.nrepl.transport :as transport]
+        '[clojure.tools.nrepl.middleware.session :refer [session]])
+      (import '(clojure.tools.nrepl.transport Transport)))
+  (do (require
+        '[nrepl.middleware :refer [set-descriptor!]]
+        '[nrepl.transport :as transport]
+        '[nrepl.middleware.session :refer [session]])
+      (import '(nrepl.transport Transport))))
 
 
 (defn form-from-cursive? [form]
@@ -33,7 +43,7 @@
         handler)))
 
 
-(nrepl/set-descriptor! #'wrap-rebl
-                       {:requires #{}
-                        :expects #{"eval"}
-                        :handles {}})
+(set-descriptor! #'wrap-rebl
+                 {:requires #{}
+                  :expects #{"eval"}
+                  :handles {}})
