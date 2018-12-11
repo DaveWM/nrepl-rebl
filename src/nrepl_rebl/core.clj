@@ -1,4 +1,4 @@
-(ns lein-nrepl-rebl.core
+(ns nrepl-rebl.core
   (:require [cognitect.rebl :as rebl]
             [clojure.tools.nrepl.middleware :as nrepl]
             [clojure.tools.nrepl.middleware.session :refer [session]]
