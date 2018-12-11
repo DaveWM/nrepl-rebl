@@ -1,23 +1,34 @@
 (ns lein-nrepl-rebl.core
   (:require [cognitect.rebl :as rebl]
-            [nrepl.middleware :as nrepl]))
+            [clojure.tools.nrepl.middleware :as nrepl]
+            [clojure.tools.nrepl.middleware.session :refer [session]]
+            [clojure.tools.nrepl.transport :as transport]))
 
 
-(defn wrap-rebl
-  {::nrepl/descriptor {:requires #{#'eval}
-                       :expects  #{}
-                       :handles  {}}}
-  [handler]
+(defrecord ReblTransport [transport handler-msg]
+  clojure.tools.nrepl.transport.Transport
+  (recv [this timeout]
+    (transport/recv transport timeout))
+  (send [this msg]
+    (transport/send transport msg)
+    (when-let [val (:value msg)]
+      (let [code-form (read-string (:code handler-msg))]
+        (when (or (not (sequential? code-form))
+                  (not (= 'cursive.repl.runtime/completions (first code-form))))
+          (rebl/submit code-form (if (string? val)
+                                   (read-string val)
+                                   val)))))
+    this))
+
+
+(defn wrap-rebl [handler]
   (rebl/ui)
-  (fn [{:keys [code values op] :as msg} & args]
-    (println op code)
-    (when (and (= op "eval") (some? code) #_(some? values))
-      (do (println code)
-          (try (rebl/submit (read-string code) (eval (read-string values))))))
-    (handler msg)))
+  (fn [msg]
+    (-> (update msg :transport #(->ReblTransport % msg))
+        handler)))
 
 
 (nrepl/set-descriptor! #'wrap-rebl
-                       {:requires #{#'eval}
-                        :expects  #{}
-                        :handles  {}})
+                       {:requires #{#'session}
+                        :expects #{"eval"}
+                        :handles {}})
