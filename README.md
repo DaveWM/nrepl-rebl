@@ -18,5 +18,4 @@ nREPL middleware to send eval'd forms to REBL.
 
 ## License
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Distributed under the GPL V3 License
