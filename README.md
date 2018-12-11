@@ -13,8 +13,9 @@ nREPL middleware to send eval'd forms to REBL.
 * Merge this into your `profiles.clj`:
 ```clojure
 {:user 
-  :dependencies [[lein-nrepl-rebl "0.1.0-SNAPSHOT"]]
-  :repl-options {:nrepl-middleware [lein-nrepl-rebl.core/wrap-rebl]}}
+  :dependencies [[nrepl-rebl "0.1.0-SNAPSHOT"]
+                 [com.cognitect/rebl "0.9.108"]]
+  :repl-options {:nrepl-middleware [nrepl-rebl.core/wrap-rebl]}}
 
 ```
 * Open your repl as usual - a REBL window should open, and receive any forms you eval in the repl
