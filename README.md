@@ -1,4 +1,5 @@
 # nrepl-rebl (alpha)
+[![Clojars Project](https://img.shields.io/clojars/v/nrepl-rebl.svg)](https://clojars.org/nrepl-rebl)
 
 nREPL middleware to send eval'd forms to REBL.
 
