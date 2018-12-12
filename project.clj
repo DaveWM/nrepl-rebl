@@ -1,4 +1,4 @@
-(defproject nrepl-rebl "0.1.0"
+(defproject nrepl-rebl "0.1.1-SNAPSHOT"
   :description "nrepl middleware for REBL"
   :url "https://github.com/DaveWM/nrepl-rebl"
   :license {:name "GPL V3"

@@ -22,17 +22,22 @@
        (= "cursive.repl.runtime" (namespace (first form)))))
 
 
+(defn read-string* [s]
+  (when s
+    (read-string s)))
+
+
 (defrecord ReblTransport [transport handler-msg]
   Transport
   (recv [this timeout]
     (transport/recv transport timeout))
   (send [this {:keys [value] :as msg}]
     (transport/send transport msg)
-    (when value
-      (let [code-form (read-string (:code handler-msg))]
-        (when-not (form-from-cursive? code-form)
-          (rebl/submit code-form value))))
-    this))
+    (let [code-form (read-string* (:code handler-msg))]
+      (when (and (some? value)
+                 (not (form-from-cursive? code-form)))
+        (rebl/submit code-form value)))
+    transport))
 
 
 (defn wrap-rebl [handler]
