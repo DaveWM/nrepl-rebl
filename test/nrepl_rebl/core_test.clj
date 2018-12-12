@@ -12,7 +12,9 @@
 
 (deftest read-string*-test
   (is (nil? (read-string* nil)))
-  (is 1 (read-string* "1")))
+  (is 1 (read-string* "1"))
+  (is (nil? (read-string* "")))
+  (is (nil? (read-string* "(+ 1"))))
 
 
 (deftest wrap-rebl-has-meta

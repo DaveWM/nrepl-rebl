@@ -24,7 +24,9 @@
 
 (defn read-string* [s]
   (when s
-    (read-string s)))
+    (try
+      (read-string s)
+      (catch Exception e nil))))
 
 
 (defrecord ReblTransport [transport handler-msg]
@@ -33,7 +35,7 @@
     (transport/recv transport timeout))
   (send [this {:keys [value] :as msg}]
     (transport/send transport msg)
-    (let [code-form (read-string* (:code handler-msg))]
+    (when-let [code-form (read-string* (:code handler-msg))]
       (when (and (some? value)
                  (not (form-from-cursive? code-form)))
         (rebl/submit code-form value)))
