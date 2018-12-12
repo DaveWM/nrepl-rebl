@@ -13,7 +13,7 @@ nREPL middleware to send eval'd forms to REBL.
 * Merge this into your `profiles.clj`:
 ```clojure
 {:user 
-  :dependencies [[nrepl-rebl "0.1.0"]
+  :dependencies [[nrepl-rebl "0.1.1"]
                  [com.cognitect/rebl "0.9.108"]]
   :repl-options {:nrepl-middleware [nrepl-rebl.core/wrap-rebl]}}
 
@@ -27,7 +27,7 @@ nREPL middleware to send eval'd forms to REBL.
 ```clojure
 {:aliases {:nrepl {:extra-deps {nrepl/nrepl {:mvn/version "0.5.0"}}}
            :rebl {:extra-deps {org.clojure/clojure {:mvn/version "1.10.0-RC4"}
-                               nrepl-rebl {:mvn/version "0.1.0"}
+                               nrepl-rebl {:mvn/version "0.1.1"}
                                com.cognitect/rebl {:local/root "[path to REBL]/REBL-0.9.108.jar"}}}}}
 ```
 * Run `clj -A:nrepl:rebl -m nrepl.cmdline --middleware '[nrepl-rebl.core/wrap-rebl]'` to start an nREPL server
