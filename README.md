@@ -33,6 +33,18 @@ nREPL middleware to send eval'd forms to REBL.
 * Run `clj -A:nrepl:rebl -m nrepl.cmdline --middleware '[nrepl-rebl.core/wrap-rebl]'` to start an nREPL server
 * Connect to the nREPL server from a client of your choice (Cursive, CIDER, etc.)
 
+### With Gradle (clojurephant)
+
+* [Download REBL](http://rebl.cognitect.com/download.html) (note the license agreement)
+* Install REBL into the local Maven repository: `unzip REBL*.jar META-INF/maven/com.cognitect/REBL/pom.xml; mvn install:install-file -Dfile=/path/to/REBL.jar -DpomFile=META-INF/maven/com.cognitect/REBL/pom.xml`
+* Merge the following into your `build.gradle` file with the [clojurephant plugin](https://clojurephant.dev/clojurephant/):
+```groovy
+dependencies {
+   devImplementation 'nrepl-rebl:nrepl-rebl:0.1.1'
+   devImplementation 'com.cognitect:REBL:0.9.218'
+}
+```
+* Run the repl with REBL: `gradlew clojureRepl --middleware=nrepl-rebl.core/wrap-rebl` (or [add it to the config](https://clojurephant.dev/clojurephant/#clojurenrepl))
 ## License
 
 Distributed under the GPL V3 License
