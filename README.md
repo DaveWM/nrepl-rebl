@@ -3,6 +3,8 @@
 
 nREPL middleware to send eval'd forms to REBL.
 
+NOTE: REBL might not run if you use a JVM that does not support JavaFX.
+
 ## Usage
 
 ### With Leiningen
